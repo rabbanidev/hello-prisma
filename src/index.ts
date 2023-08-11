@@ -1,10 +1,9 @@
 import app from "./app";
-
-const port = process.env.PORT || 50001;
+import config from "./config";
 
 const main = async () => {
-  app.listen(port, () => {
-    console.log(`Application runing on port ${port}`);
+  app.listen(config.port, () => {
+    console.log(`Application runing on port ${config.port}`);
   });
 };
 
