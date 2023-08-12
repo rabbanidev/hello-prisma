@@ -5,5 +5,6 @@ const route = express.Router();
 
 route.post("/", UserController.createUser);
 route.get("/", UserController.getUsers);
+route.post("/profile", UserController.createOrUpdateProfile);
 
 export const UserRoutes = route;

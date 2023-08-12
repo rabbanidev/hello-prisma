@@ -39,7 +39,27 @@ const getUsers: RequestHandler = async (req, res) => {
   }
 };
 
+const createOrUpdateProfile: RequestHandler = async (req, res) => {
+  try {
+    const result = await UserService.createOrUpdateProfile(req.body);
+
+    res.status(201).json({
+      statusCode: 201,
+      status: "success",
+      message: "Profile created or updated successfully!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      statusCode: 500,
+      status: "failed",
+      message: "Something went wrong!",
+    });
+  }
+};
+
 export const UserController = {
   createUser,
   getUsers,
+  createOrUpdateProfile,
 };
