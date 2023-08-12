@@ -1,15 +1,34 @@
 import { RequestHandler } from "express";
 import { UserService } from "./user.service";
 
+const createUser: RequestHandler = async (req, res) => {
+  try {
+    const result = await UserService.createUser(req.body);
+
+    res.status(201).json({
+      statusCode: 201,
+      status: "success",
+      message: "User created successfully!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      statusCode: 500,
+      status: "failed",
+      message: "Something went wrong!",
+    });
+  }
+};
+
 const getUsers: RequestHandler = async (req, res) => {
   try {
-    const users = await UserService.getUsers();
+    const result = await UserService.getUsers();
 
     res.status(200).json({
       statusCode: 200,
       status: "success",
       message: "Users Retrive successfully!",
-      data: users,
+      data: result,
     });
   } catch (error) {
     res.status(500).json({
@@ -21,5 +40,6 @@ const getUsers: RequestHandler = async (req, res) => {
 };
 
 export const UserController = {
+  createUser,
   getUsers,
 };
