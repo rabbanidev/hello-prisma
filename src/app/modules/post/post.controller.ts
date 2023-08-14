@@ -22,7 +22,8 @@ const createPost: RequestHandler = async (req, res) => {
 
 const getAllPosts: RequestHandler = async (req, res) => {
   try {
-    const result = await PostService.getAllPosts();
+    const options = req.query;
+    const result = await PostService.getAllPosts(options);
 
     res.status(200).json({
       statusCode: 200,
@@ -39,7 +40,27 @@ const getAllPosts: RequestHandler = async (req, res) => {
   }
 };
 
+const getSinglePost: RequestHandler = async (req, res) => {
+  try {
+    const result = await PostService.getSinglePost(Number(req.params.id));
+
+    res.status(200).json({
+      statusCode: 200,
+      status: "success",
+      message: "Post retrive successfully!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      statusCode: 500,
+      status: "failed",
+      message: "Something went wrong!",
+    });
+  }
+};
+
 export const PostController = {
   createPost,
   getAllPosts,
+  getSinglePost,
 };
