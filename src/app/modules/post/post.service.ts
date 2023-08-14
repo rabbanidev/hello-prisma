@@ -13,20 +13,24 @@ const createPost = async (data: Post): Promise<Post> => {
   return result;
 };
 
-const getAllPosts = async (options: any): Promise<Post[]> => {
-  const { sortBy, sortOrder, searchTerm } = options;
+const getAllPosts = async (options: any) => {
+  const { sortBy, sortOrder, searchTerm, page, limit } = options;
+  const skip = Number(limit) * Number(page) - Number(limit) || 0;
+  const take = Number(limit) || 2;
 
   const result = await prisma.post.findMany({
     include: {
       authory: true,
       category: true,
     },
+    // Sorting
     orderBy:
       sortBy && sortOrder
         ? {
             [sortBy]: sortOrder,
           }
         : { createdAt: "desc" },
+    // Filtering
     where: {
       OR: [
         {
@@ -39,8 +43,21 @@ const getAllPosts = async (options: any): Promise<Post[]> => {
         },
       ],
     },
+    // Pagination
+    skip,
+    take,
   });
-  return result;
+
+  const total = await prisma.post.count();
+
+  return {
+    meta: {
+      page: Number(page) || 1,
+      limit: take,
+      total,
+    },
+    data: result,
+  };
 };
 
 const getSinglePost = async (id: number): Promise<Post | null> => {

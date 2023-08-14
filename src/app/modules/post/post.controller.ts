@@ -29,9 +29,12 @@ const getAllPosts: RequestHandler = async (req, res) => {
       statusCode: 200,
       status: "success",
       message: "Posts retrive successfully!",
-      data: result,
+      meta: result.meta,
+      data: result.data,
     });
   } catch (error) {
+    console.log("error", error);
+
     res.status(500).json({
       statusCode: 500,
       status: "failed",
