@@ -103,10 +103,30 @@ const deletePost: RequestHandler = async (req, res) => {
   }
 };
 
+const learnAggregate: RequestHandler = async (req, res) => {
+  try {
+    const result = await PostService.learnAggregate();
+
+    res.status(200).json({
+      statusCode: 200,
+      status: "success",
+      message: "Learn aggregate!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      statusCode: 500,
+      status: "failed",
+      message: "Something went wrong!",
+    });
+  }
+};
+
 export const PostController = {
   createPost,
   getAllPosts,
   getSinglePost,
   updatePost,
   deletePost,
+  learnAggregate,
 };
